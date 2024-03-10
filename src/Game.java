@@ -13,6 +13,34 @@ public class Game {
         System.out.println(player.getName() + "! I wonder if you are the hero the legends speak of...");
         System.out.println("To start your journey, you need to choose your character.");
         player.selectChar();
+
+        Location location = null;
+
+        while(true){
+            player.printStatus();
+            System.out.println();
+            System.out.println("You can go to: ");
+            System.out.println("1 - Tavern");
+            System.out.println("2 - Shop");
+            System.out.println("Please enter where you want to go: ");
+            int selectedLoc = scanner.nextInt();
+            switch (selectedLoc) {
+                case 1:
+                    location = new Tavern(player);
+                    break;
+                case 2:
+                    location = new Shop(player);
+                    break;
+                default:
+                    location = new Tavern(player);
+            }
+
+            if(!location.onLocation()){
+                System.out.println("You died. We shall meet in another life...");
+                break;
+            }
+        }
+
     }
 }
 

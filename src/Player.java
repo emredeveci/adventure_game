@@ -6,15 +6,19 @@ public class Player {
     private int gold;
     private String charName;
     private String name;
+    private Inventory inventory;
     private Scanner scanner = new Scanner(System.in);
 
     public Player(String name) {
         this.name = name;
+        this.inventory = new Inventory();
     }
 
     public void selectChar() {
 
         CharType[] charList = {new Samurai(), new Archer(), new Knight()};
+
+        System.out.println("------------------------------------------------------");
 
         for (CharType charType : charList) {
             System.out.println("ID : " + charType.getId() +
@@ -24,7 +28,7 @@ public class Player {
                     "\t Gold: " + charType.getGold());
         }
 
-        System.out.println("-----------------");
+        System.out.println("------------------------------------------------------");
         System.out.print("Enter your choice: ");
         int selectedChar = scanner.nextInt();
         switch (selectedChar) {
@@ -32,10 +36,10 @@ public class Player {
                 initPlayer(new Samurai());
                 break;
             case 2:
-                initPlayer(new Knight());
+                initPlayer(new Archer());
                 break;
             case 3:
-                initPlayer(new Archer());
+                initPlayer(new Knight());
                 break;
             default:
                 initPlayer(new Samurai());
@@ -50,8 +54,12 @@ public class Player {
         this.setCharName(gameChar.getName());
     }
 
+    public void printStatus(){
+        System.out.println("Weapon: " + this.getInventory().getWeapon().getName() + ", Attack: " + this.getDamage() + ", Health: " + this.getHealth() + ", Gold: " + this.getGold());
+    }
+
     public int getDamage() {
-        return damage;
+        return damage + this.getInventory().getWeapon().getDamage();
     }
 
     public void setDamage(int damage) {
@@ -88,5 +96,13 @@ public class Player {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public Inventory getInventory() {
+        return inventory;
+    }
+
+    public void setInventory(Inventory inventory) {
+        this.inventory = inventory;
     }
 }
