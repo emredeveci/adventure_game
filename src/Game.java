@@ -22,19 +22,39 @@ public class Game {
             System.out.println("You can go to: ");
             System.out.println("1 - Tavern");
             System.out.println("2 - Shop");
+            System.out.println("3 - Enter the Caves to fight monsters. Reward is: Food.");
+            System.out.println("4 - Walk through the Forest to fight monsters. Reward is: Firewood.");
+            System.out.println("5 - Go near the River to fight monsters. Reward is: Water.");
+            System.out.println("0 - Quit the game");
             System.out.println("Please enter where you want to go: ");
             int selectedLoc = scanner.nextInt();
             switch (selectedLoc) {
+                case 0:
+                    location = null;
+                    break;
                 case 1:
                     location = new Tavern(player);
                     break;
                 case 2:
                     location = new Shop(player);
                     break;
+                case 3:
+                    location = new Cave(player);
+                    break;
+                case 4:
+                    location = new Forest(player);
+                    break;
+                case 5:
+                    location = new River(player);
+                    break;
                 default:
-                    location = new Tavern(player);
+                    System.out.println("Please make a valid choice.");
             }
 
+            if (location == null) {
+                System.out.println("Your adventure has come to a premature end. What a disappointment...");
+                break;
+            }
             if(!location.onLocation()){
                 System.out.println("You died. We shall meet in another life...");
                 break;
