@@ -6,6 +6,7 @@ public class Tavern extends NormalLoc {
     @Override
     public boolean onLocation() {
         System.out.println("Welcome to the Tavern. Your health is fully replenished.");
+        this.getPlayer().setHealth(this.getPlayer().getBeginningHealth());
         return true;
     }
 }
