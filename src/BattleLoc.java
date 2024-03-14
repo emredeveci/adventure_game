@@ -14,6 +14,28 @@ public abstract class BattleLoc extends Location {
 
     @Override
     public boolean onLocation() {
+
+        switch (this.getName()) {
+            case "The Caves":
+                if (this.getPlayer().getCompletedAreas().contains("The Caves")) {
+                    System.out.println("You cannot re-enter this area. It's already been completed.");
+                    return true;
+                }
+                break;
+            case "The Forest":
+                if (this.getPlayer().getCompletedAreas().contains("The Forest")) {
+                    System.out.println("You cannot re-enter this area. It's already been completed.");
+                    return true;
+                }
+                break;
+            case "The River":
+                if (this.getPlayer().getCompletedAreas().contains("The River")) {
+                    System.out.println("You cannot re-enter this area. It's already been completed.");
+                    return true;
+                }
+                break;
+        }
+
         int enemyCount = this.randomEnemyCount();
         if (enemyCount == 1) {
             System.out.println("You are now here: " + this.getName() + ". \nBe careful! There is a " + this.getEnemy().getName() + " here.");
@@ -68,6 +90,13 @@ public abstract class BattleLoc extends Location {
                 System.out.println("You have slain your opponent.");
                 System.out.println("You have earned " + this.getEnemy().getReward() + " gold.");
                 this.getPlayer().setGold(this.getPlayer().getGold() + this.getEnemy().getReward());
+                if (i == enemyCount) {
+                    this.getPlayer().getInventory().setLoot(this.getEnemy().getLoot());
+                    this.getPlayer().setCompletedAreas(this.getName());
+                    System.out.println(this.getEnemy().getLoot() + " has been added to your inventory.");
+                    System.out.println("Your inventory: " + this.getPlayer().getInventory().getLoot());
+                    System.out.println("Your completed areas: " + this.getPlayer().getCompletedAreas());
+                }
                 System.out.println("Your balance is: " + this.getPlayer().getGold());
             } else {
                 return false;

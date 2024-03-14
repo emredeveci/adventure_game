@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Player {
@@ -9,6 +10,7 @@ public class Player {
     private String name;
     private Inventory inventory;
     private Scanner scanner = new Scanner(System.in);
+    private ArrayList<String> completedAreas;
 
     public Player(String name) {
         this.name = name;
@@ -54,6 +56,7 @@ public class Player {
         this.setGold(gameChar.getGold());
         this.setCharName(gameChar.getName());
         this.setBeginningHealth(gameChar.getHealth());
+        this.completedAreas = new ArrayList<String>();
     }
 
     public void printStatus() {
@@ -126,5 +129,13 @@ public class Player {
 
     public void setBeginningHealth(int beginningHealth) {
         this.beginningHealth = beginningHealth;
+    }
+
+    public ArrayList<String> getCompletedAreas() {
+        return completedAreas;
+    }
+
+    public void setCompletedAreas(String completedMission) {
+        this.completedAreas.add(completedMission);
     }
 }
