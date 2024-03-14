@@ -54,7 +54,7 @@ public class Player {
         this.setCharName(gameChar.getName());
     }
 
-    public void printStatus(){
+    public void printStatus() {
         System.out.println("Weapon: " + this.getInventory().getWeapon().getName() +
                 ", Armor: " + this.getInventory().getArmor().getName() +
                 ", Defense: " + this.getInventory().getArmor().getDefense() +
@@ -63,8 +63,12 @@ public class Player {
                 ", Gold: " + this.getGold());
     }
 
-    public int getDamage() {
+    public int getTotalDamage() {
         return damage + this.getInventory().getWeapon().getDamage();
+    }
+
+    public int getDamage() {
+        return damage;
     }
 
     public void setDamage(int damage) {
@@ -110,4 +114,5 @@ public class Player {
     public void setInventory(Inventory inventory) {
         this.inventory = inventory;
     }
+
 }

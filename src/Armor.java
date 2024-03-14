@@ -13,16 +13,16 @@ public class Armor {
 
     public static Armor[] armors() {
         Armor[] armorList = new Armor[3];
-        armorList[0] = new Armor(1, "Hide Armor", 1, 15 );
-        armorList[1] = new Armor(2,"Leather Armor", 3, 25);
-        armorList[2] = new Armor(3,"Chainmail", 5,40);
+        armorList[0] = new Armor(1, "Hide Armor", 1, 15);
+        armorList[1] = new Armor(2, "Leather Armor", 3, 25);
+        armorList[2] = new Armor(3, "Chainmail", 5, 40);
 
         return armorList;
     }
 
-    public static Armor getWeaponObjByID(int id){
-        for (Armor a: Armor.armors()){
-            if (a.getId() == id){
+    public static Armor getWeaponObjByID(int id) {
+        for (Armor a : Armor.armors()) {
+            if (a.getId() == id) {
                 return a;
             }
         }

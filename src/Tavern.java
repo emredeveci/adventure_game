@@ -1,5 +1,5 @@
-public class Tavern extends NormalLoc{
-    public Tavern(Player player){
+public class Tavern extends NormalLoc {
+    public Tavern(Player player) {
         super(player, "Tavern");
     }
 

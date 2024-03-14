@@ -5,12 +5,12 @@ public abstract class Location {
     private String name;
     public static Scanner scanner = new Scanner(System.in);
 
-   public Location (Player player, String name){
-       this.name = name;
-       this.player = player;
-   }
+    public Location(Player player, String name) {
+        this.name = name;
+        this.player = player;
+    }
 
-   public abstract boolean onLocation();
+    public abstract boolean onLocation();
 
     public Player getPlayer() {
         return player;

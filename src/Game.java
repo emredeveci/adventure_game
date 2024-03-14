@@ -3,7 +3,7 @@ import java.util.Scanner;
 public class Game {
     private Scanner scanner = new Scanner(System.in);
 
-    public void start(){
+    public void start() {
 
         System.out.println("Welcome to the Realm of the Wizards!");
 //        System.out.println("What should we call you, wanderer?");
@@ -16,7 +16,7 @@ public class Game {
 
         Location location = null;
 
-        while(true){
+        while (true) {
             player.printStatus();
             System.out.println();
             System.out.println("You can go to: ");
@@ -55,7 +55,7 @@ public class Game {
                 System.out.println("Your adventure has come to a premature end. What a disappointment...");
                 break;
             }
-            if(!location.onLocation()){
+            if (!location.onLocation()) {
                 System.out.println("You died. We shall meet in another life...");
                 break;
             }

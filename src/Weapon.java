@@ -13,15 +13,15 @@ public class Weapon {
 
     public static Weapon[] weapons() {
         Weapon[] weaponList = new Weapon[3];
-        weaponList[0] = new Weapon("Dual Swords", 1, 3, 25 );
+        weaponList[0] = new Weapon("Dual Swords", 1, 3, 25);
         weaponList[1] = new Weapon("Crossbow", 2, 4, 10);
         weaponList[2] = new Weapon("Long Sword", 3, 5, 25);
         return weaponList;
     }
 
-    public static Weapon getWeaponObjByID(int id){
-        for (Weapon w: Weapon.weapons()){
-            if (w.getId() == id){
+    public static Weapon getWeaponObjByID(int id) {
+        for (Weapon w : Weapon.weapons()) {
+            if (w.getId() == id) {
                 return w;
             }
         }
