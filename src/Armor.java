@@ -1,3 +1,5 @@
+import java.util.Objects;
+
 public class Armor {
     private int id;
     private String name;
@@ -20,10 +22,19 @@ public class Armor {
         return armorList;
     }
 
-    public static Armor getWeaponObjByID(int id) {
+    public static Armor getArmorObjByID(int id) {
         for (Armor a : Armor.armors()) {
             if (a.getId() == id) {
                 return a;
+            }
+        }
+        return null;
+    }
+
+    public static Armor getArmorObjByName(String name) {
+        for (Armor w : Armor.armors()) {
+            if (Objects.equals(w.getName(), name)) {
+                return w;
             }
         }
         return null;

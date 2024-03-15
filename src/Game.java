@@ -17,14 +17,16 @@ public class Game {
         Location location = null;
 
         while (true) {
+
             player.printStatus();
             System.out.println();
             System.out.println("You can go to: ");
             System.out.println("1 - Tavern");
             System.out.println("2 - Shop");
-            System.out.println("3 - Enter the Caves to fight monsters. Reward is: Food.");
-            System.out.println("4 - Walk through the Forest to fight monsters. Reward is: Firewood.");
-            System.out.println("5 - Go near the River to fight monsters. Reward is: Water.");
+            System.out.println("3 - Enter the Caves to fight Zombies. Reward is: Food.");
+            System.out.println("4 - Walk through the Forest to fight Vampires. Reward is: Firewood.");
+            System.out.println("5 - Go near the River to fight Bears. Reward is: Water.");
+            System.out.println("6 - Explore the Mines to fight Snakes. You have a chance to win Weapons, Armor, or Gold.");
             System.out.println("0 - Quit the game");
             System.out.println("Please enter where you want to go: ");
             int selectedLoc = scanner.nextInt();
@@ -47,6 +49,9 @@ public class Game {
                 case 5:
                     location = new River(player);
                     break;
+                case 6:
+                    location = new Mines(player);
+                    break;
                 default:
                     System.out.println("Please make a valid choice.");
             }
@@ -56,6 +61,9 @@ public class Game {
                 break;
             }
             if (!location.onLocation()) {
+                if (player.isWinGame()) {
+                    break;
+                }
                 System.out.println("You died. We shall meet in another life...");
                 break;
             }

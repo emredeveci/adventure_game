@@ -86,7 +86,7 @@ public class Shop extends NormalLoc {
         }
 
         if (selectedArmorID != 0) {
-            Armor selectedArmor = Armor.getWeaponObjByID(selectedArmorID);
+            Armor selectedArmor = Armor.getArmorObjByID(selectedArmorID);
 
             if (selectedArmor != null) {
                 if (selectedArmor.getCost() > this.getPlayer().getGold()) {

@@ -11,6 +11,7 @@ public class Player {
     private Inventory inventory;
     private Scanner scanner = new Scanner(System.in);
     private ArrayList<String> completedAreas;
+    private boolean winGame = false;
 
     public Player(String name) {
         this.name = name;
@@ -137,5 +138,13 @@ public class Player {
 
     public void setCompletedAreas(String completedMission) {
         this.completedAreas.add(completedMission);
+    }
+
+    public boolean isWinGame() {
+        return winGame;
+    }
+
+    public void setWinGame(boolean winGame) {
+        this.winGame = winGame;
     }
 }

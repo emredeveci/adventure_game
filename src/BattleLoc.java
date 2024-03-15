@@ -1,9 +1,11 @@
+import java.util.Objects;
 import java.util.Random;
 
 public abstract class BattleLoc extends Location {
     private Enemy enemy;
     private String reward;
     private int maxEnemies;
+    private Random random = new Random();
 
     public BattleLoc(Player player, String name, Enemy enemy, String reward, int maxEnemies) {
         super(player, name);
@@ -43,7 +45,7 @@ public abstract class BattleLoc extends Location {
             System.out.println("You are now here: " + this.getName() + ". \nBe careful! There are " + enemyCount + " " + this.getEnemy().getName() + "s here.");
         }
 
-        System.out.print("<F>ight or <E>scape");
+        System.out.print("<F>ight or <E>scape: ");
         String selection = scanner.nextLine();
         if (selection.equalsIgnoreCase("F") && combat(enemyCount)) {
             System.out.println("You won the fight.");
@@ -51,7 +53,6 @@ public abstract class BattleLoc extends Location {
         }
 
         if (this.getPlayer().getHealth() <= 0) {
-            System.out.println("You died.");
             return false;
         }
         return true;
@@ -65,13 +66,30 @@ public abstract class BattleLoc extends Location {
             System.out.println();
             enemyStats(i);
 
+            boolean playerAttacksFirst = random.nextBoolean();
+
             while (this.getPlayer().getHealth() > 0 && this.getEnemy().getHealth() > 0) {
-                System.out.println("(H)it or (E)scape");
-                String selectCombat = scanner.nextLine();
-                if (selectCombat.equalsIgnoreCase("H")) {
-                    System.out.println("You landed a hit.");
-                    this.getEnemy().setHealth(this.getEnemy().getHealth() - this.getPlayer().getTotalDamage());
-                    afterHit();
+                if (playerAttacksFirst) {
+                    System.out.println("(H)it or (E)scape");
+                    String selectCombat = scanner.nextLine();
+                    if (selectCombat.equalsIgnoreCase("H")) {
+                        System.out.println("You landed a hit.");
+                        this.getEnemy().setHealth(this.getEnemy().getHealth() - this.getPlayer().getTotalDamage());
+                        afterHit();
+                        if (this.getEnemy().getHealth() > 0) {
+                            System.out.println();
+                            System.out.println("The opponent attacked you.");
+                            int enemyDamage = this.getEnemy().getDamage() - this.getPlayer().getInventory().getArmor().getDefense();
+                            if (enemyDamage < 0) {
+                                enemyDamage = 0;
+                            }
+                            this.getPlayer().setHealth(this.getPlayer().getHealth() - enemyDamage);
+                            afterHit();
+                        }
+                    } else {
+                        return false;
+                    }
+                } else {
                     if (this.getEnemy().getHealth() > 0) {
                         System.out.println();
                         System.out.println("The opponent attacked you.");
@@ -81,19 +99,48 @@ public abstract class BattleLoc extends Location {
                         }
                         this.getPlayer().setHealth(this.getPlayer().getHealth() - enemyDamage);
                         afterHit();
+                        System.out.println("(H)it or (E)scape");
+                        String selectCombat = scanner.nextLine();
+                        if (selectCombat.equalsIgnoreCase("H")) {
+                            System.out.println("You landed a hit.");
+                            this.getEnemy().setHealth(this.getEnemy().getHealth() - this.getPlayer().getTotalDamage());
+                            afterHit();
+                        }
+                    } else {
+                        return false;
                     }
-                } else {
-                    return false;
                 }
             }
+
             if (this.getEnemy().getHealth() < this.getPlayer().getHealth()) {
                 System.out.println("You have slain your opponent.");
-                System.out.println("You have earned " + this.getEnemy().getReward() + " gold.");
-                this.getPlayer().setGold(this.getPlayer().getGold() + this.getEnemy().getReward());
-                if (i == enemyCount) {
-                    this.getPlayer().getInventory().setLoot(this.getEnemy().getLoot());
+
+                if (Objects.equals(this.getEnemy().getName(), "Snake")) {
+                    String loot = lootGeneration();
+
+                    if (Objects.equals(loot, "Long Sword") || Objects.equals(loot, "Crossbow") || Objects.equals(loot, "Dual Swords")) {
+                        this.getPlayer().getInventory().setWeapon(Weapon.getWeaponObjByName(loot));
+                        System.out.println("You have acquired: " + loot);
+                    } else if (Objects.equals(loot, "Hide Armor") || Objects.equals(loot, "Chainmail") || Objects.equals(loot, "Leather Armor")) {
+                        this.getPlayer().getInventory().setArmor(Armor.getArmorObjByName(loot));
+                        System.out.println("You have acquired: " + loot);
+                    } else if (Objects.equals(loot, "10") || Objects.equals(loot, "5") || Objects.equals(loot, "1")) {
+                        this.getPlayer().setGold(this.getPlayer().getGold() + Integer.parseInt(loot));
+                        System.out.println("You have acquired: " + loot + " gold");
+                    } else {
+                        System.out.println("Bad luck. You have earned nothing.");
+                    }
+
+                }
+                if (this.getEnemy().getName() != "Snake") {
+                    System.out.println("You have earned " + this.getEnemy().getReward() + " gold.");
+                    this.getPlayer().setGold(this.getPlayer().getGold() + this.getEnemy().getReward());
+                }
+
+                if (i == enemyCount && !Objects.equals(this.getEnemy().getName(), "Snake")) {
+                    this.getPlayer().getInventory().setLoot(this.getReward());
                     this.getPlayer().setCompletedAreas(this.getName());
-                    System.out.println(this.getEnemy().getLoot() + " has been added to your inventory.");
+                    System.out.println(this.getReward() + " has been added to your inventory.");
                     System.out.println("Your inventory: " + this.getPlayer().getInventory().getLoot());
                     System.out.println("Your completed areas: " + this.getPlayer().getCompletedAreas());
                 }
@@ -104,6 +151,56 @@ public abstract class BattleLoc extends Location {
         }
 
         return true;
+    }
+
+    public String lootGeneration() {
+        Random random = new Random();
+        double probability = random.nextDouble() * 100;
+        if (probability < 15) {
+            return weaponGeneration();
+        } else if (probability < 30) {
+            return armorGeneration();
+        } else if (probability < 55) {
+            return goldGeneration();
+        } else {
+            return "Nothing";
+        }
+    }
+
+    public String weaponGeneration() {
+        Random random = new Random();
+        double probability = random.nextDouble() * 100;
+        if (probability < 20) {
+            return "Long Sword";
+        } else if (probability < 50) {
+            return "Crossbow";
+        } else {
+            return "Dual Swords";
+        }
+    }
+
+    public String armorGeneration() {
+        Random random = new Random();
+        double probability = random.nextDouble() * 100;
+        if (probability < 20) {
+            return "Chainmail";
+        } else if (probability < 50) {
+            return "Leather Armor";
+        } else {
+            return "Hide Armor";
+        }
+    }
+
+    public String goldGeneration() {
+        Random random = new Random();
+        double probability = random.nextDouble() * 100;
+        if (probability < 20) {
+            return "10";
+        } else if (probability < 50) {
+            return "5";
+        } else {
+            return "1";
+        }
     }
 
     public void afterHit() {

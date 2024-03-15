@@ -1,5 +1,5 @@
 public class Knight extends CharType {
     public Knight() {
-        super(3, "Knight", 8, 24, 100);
+        super(3, "Knight", 8, 1000, 100);
     }
 }
